@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"guntertainment/internal/server"
+
+	"gontertainment/internal/server"
 )
 
 func main() {
-
 	server := server.NewServer()
 
 	err := server.ListenAndServe()

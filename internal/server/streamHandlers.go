@@ -14,10 +14,17 @@ import (
 )
 
 func (s *Server) streamVideo(c *gin.Context) {
-	moviePath := c.Param("movie_path")
-	if moviePath == "" {
+	movieID := c.Param("movie_id")
+	if movieID == "" {
 		log.Println("Movie path is required")
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Movie path is required"})
+		return
+	}
+
+	moviePath, err := s.db.GetMoviePath(movieID)
+	if err != nil {
+		log.Printf("Movie with ID %s doesn't exists", movieID)
+		c.JSON(http.StatusNotFound, gin.H{"msg": "Movie not found"})
 		return
 	}
 

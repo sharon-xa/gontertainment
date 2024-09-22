@@ -25,6 +25,7 @@ type Service interface {
 
 	ScanDirectory(dir string) error
 	GetAllMovies() ([]Movie, error)
+	GetMoviePath(movieID string) (string, error)
 }
 
 type service struct {

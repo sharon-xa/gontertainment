@@ -4,14 +4,19 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"gontertainment/internal/middleware"
 )
 
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
+	r.Use(middleware.SetupCORS())
 
 	r.POST("/scan", s.scanMovies)
 	r.GET("/movies", s.getMovies)
-	r.GET("/movie/:movie_path", s.streamVideo)
+	r.GET("/movie/:movie_id", s.streamVideo)
+	// delete a movie
+	// set release year for better results
 
 	r.GET("/health", s.healthHandler)
 
