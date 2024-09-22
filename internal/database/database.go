@@ -22,6 +22,9 @@ type Service interface {
 	// Close terminates the database connection.
 	// It returns an error if the connection cannot be closed.
 	Close() error
+
+	ScanDirectory(dir string) error
+	GetAllMovies() ([]Movie, error)
 }
 
 type service struct {
@@ -34,7 +37,6 @@ var (
 	username   = os.Getenv("DB_USERNAME")
 	port       = os.Getenv("DB_PORT")
 	host       = os.Getenv("DB_HOST")
-	schema     = os.Getenv("DB_SCHEMA")
 	dbInstance *service
 )
 
@@ -43,7 +45,14 @@ func New() Service {
 	if dbInstance != nil {
 		return dbInstance
 	}
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable&search_path=%s", username, password, host, port, database, schema)
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		username,
+		password,
+		host,
+		port,
+		database,
+	)
 	db, err := sql.Open("pgx", connStr)
 	if err != nil {
 		log.Fatal(err)

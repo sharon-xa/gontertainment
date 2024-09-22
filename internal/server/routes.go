@@ -9,18 +9,13 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
-	r.GET("/", s.HelloWorldHandler)
+	r.POST("/scan", s.scanMovies)
+	r.GET("/movies", s.getMovies)
+	r.GET("/movie/:movie_path", s.streamVideo)
 
 	r.GET("/health", s.healthHandler)
 
 	return r
-}
-
-func (s *Server) HelloWorldHandler(c *gin.Context) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
-
-	c.JSON(http.StatusOK, resp)
 }
 
 func (s *Server) healthHandler(c *gin.Context) {
